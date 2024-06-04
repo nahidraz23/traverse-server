@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 5300;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const { useSearchParams } = require('react-router-dom');
 
 // middleware
@@ -12,7 +12,7 @@ app.use(cors());
 
 // mongodb 
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pnav9bi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.szws1et.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -29,6 +29,7 @@ async function run() {
     // await client.connect();
 
     const usersCollection = client.db('traverseDB').collection('users');
+    const packagesCollection = client.db('traverseDB').collection('packages');
 
     // users related api
     app.get('/users', async(req, res) => {
@@ -39,6 +40,19 @@ async function run() {
     app.post('/users', async(req, res) => {
         const user = req.body;
         const result = await usersCollection.insertOne(user);
+        res.send(result);
+    })
+
+    // packages related api
+    app.get('/packageDetails', async(req, res) => {
+        const result = await packagesCollection.find().toArray();
+        res.send(result);
+    })
+
+    app.get('/packageDetails/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id : new ObjectId(id)};
+        const result = await packagesCollection.findOne(query);
         res.send(result);
     })
 
