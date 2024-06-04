@@ -30,6 +30,7 @@ async function run() {
 
     const usersCollection = client.db('traverseDB').collection('users');
     const packagesCollection = client.db('traverseDB').collection('packages');
+    const guidesCollection = client.db('traverseDB').collection('guides');
 
     // users related api
     app.get('/users', async(req, res) => {
@@ -56,6 +57,11 @@ async function run() {
         res.send(result);
     })
 
+    // tour guides related api
+    app.get('/guides', async (req, res) => {
+        const result = await guidesCollection.find().toArray();
+        res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
