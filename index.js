@@ -47,10 +47,12 @@ async function run() {
     })
 
     // bookings related api
-    // app.get('/bookings', async(req, res) => {
-    //     const result = await bookingsCollection.find().toArray();
-    //     res.
-    // })
+    app.get('/bookings', async(req, res) => {
+        const email = req.query.email;
+        const query = {email : email};
+        const result = await bookingsCollection.find(query).toArray();
+        res.send(result);
+    })
 
     app.post('/bookings', async(req, res) => {
         const bookings = req.body;
