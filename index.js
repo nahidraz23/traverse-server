@@ -32,6 +32,7 @@ async function run() {
     const packagesCollection = client.db('traverseDB').collection('packages');
     const guidesCollection = client.db('traverseDB').collection('guides');
     const wishlistCollection = client.db('traverseDB').collection('wishlist');
+    const bookingsCollection = client.db('traverseDB').collection('bookings');
 
     // users related api
     app.get('/users', async(req, res) => {
@@ -42,6 +43,18 @@ async function run() {
     app.post('/users', async(req, res) => {
         const user = req.body;
         const result = await usersCollection.insertOne(user);
+        res.send(result);
+    })
+
+    // bookings related api
+    // app.get('/bookings', async(req, res) => {
+    //     const result = await bookingsCollection.find().toArray();
+    //     res.
+    // })
+
+    app.post('/bookings', async(req, res) => {
+        const bookings = req.body;
+        const result = await bookingsCollection.insertOne(bookings);
         res.send(result);
     })
 
