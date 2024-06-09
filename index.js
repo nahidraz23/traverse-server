@@ -38,17 +38,17 @@ async function run () {
     app.get('/users', async (req, res) => {
       const result = await usersCollection.find().toArray()
       res.send(result)
-    });
+    })
 
-    app.get('/users/:email', async(req, res) => {
-        const email = req.params.email;
-        const query = {email: email};
-        const user = await usersCollection.findOne(query);
-        let admin = false;
-        if(user){
-            admin = user?.role === 'admin';
-        }
-        res.send({admin});
+    app.get('/users/:email', async (req, res) => {
+      const email = req.params.email
+      const query = { email: email }
+      const user = await usersCollection.findOne(query)
+      let admin = false
+      if (user) {
+        admin = user?.role === 'admin'
+      }
+      res.send({ admin })
     })
 
     app.post('/users', async (req, res) => {
@@ -71,7 +71,7 @@ async function run () {
         }
       }
       const result = await usersCollection.updateOne(filter, updatedDoc)
-      res.send(result);
+      res.send(result)
     })
 
     // bookings related api
@@ -132,6 +132,24 @@ async function run () {
       const id = req.params.id
       const query = { _id: new ObjectId(id) }
       const result = await guidesCollection.findOne(query)
+      res.send(result)
+    })
+
+    app.post('/guides', async (req, res) => {
+      const guideInfo = req.body
+      const result = await guidesCollection.insertOne(guideInfo)
+      res.send(result)
+    })
+
+    app.patch('/tourguides/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set: {
+          role: 'tour guide'
+        }
+      }
+      const result = await usersCollection.updateOne(filter, updatedDoc)
       res.send(result)
     })
 
