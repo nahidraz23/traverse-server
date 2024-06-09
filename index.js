@@ -76,6 +76,13 @@ async function run () {
 
     // bookings related api
     app.get('/bookings', async (req, res) => {
+      const guide = req.query.guide
+      const query = { guide: guide }
+      const result = await bookingsCollection.find(query).toArray()
+      res.send(result)
+    })
+
+    app.get('/mybookings', async (req, res) => {
       const email = req.query.email
       const query = { email: email }
       const result = await bookingsCollection.find(query).toArray()
@@ -86,6 +93,18 @@ async function run () {
       const bookings = req.body
       const result = await bookingsCollection.insertOne(bookings)
       res.send(result)
+    })
+
+    app.patch('/bookings/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set: {
+          status: 'accepted'
+        }
+      }
+      const result = await bookingsCollection.updateOne(filter, updatedDoc);
+      res.send(result);
     })
 
     // wishlist related api
@@ -135,9 +154,9 @@ async function run () {
       res.send(result)
     })
 
-    app.get('/tourguides', async(req, res) => {
-      const email = req.query.email;
-      const query = {email : email};
+    app.get('/tourguides', async (req, res) => {
+      const email = req.query.email
+      const query = { email: email }
       const result = await guidesCollection.findOne(query)
       res.send(result)
     })
