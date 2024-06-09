@@ -135,6 +135,24 @@ async function run () {
       res.send(result)
     })
 
+    app.get('/tourguides', async(req, res) => {
+      const email = req.query.email;
+      const query = {email : email};
+      const result = await guidesCollection.findOne(query)
+      res.send(result)
+    })
+
+    app.get('/tourguides/:email', async (req, res) => {
+      const email = req.params.email
+      const query = { email: email }
+      const user = await usersCollection.findOne(query)
+      let guide = false
+      if (user) {
+        guide = user?.role === 'guide'
+      }
+      res.send({ guide })
+    })
+
     app.post('/guides', async (req, res) => {
       const guideInfo = req.body
       const result = await guidesCollection.insertOne(guideInfo)
@@ -146,7 +164,7 @@ async function run () {
       const filter = { _id: new ObjectId(id) }
       const updatedDoc = {
         $set: {
-          role: 'tour guide'
+          role: 'guide'
         }
       }
       const result = await usersCollection.updateOne(filter, updatedDoc)
