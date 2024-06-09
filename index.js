@@ -106,6 +106,18 @@ async function run () {
       const result = await bookingsCollection.updateOne(filter, updatedDoc);
       res.send(result);
     })
+    
+    app.patch('/mybookings/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set: {
+          status: 'rejected'
+        }
+      }
+      const result = await bookingsCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    })
 
     // wishlist related api
     app.get('/wishlist', async (req, res) => {
