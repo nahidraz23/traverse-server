@@ -78,15 +78,15 @@ async function run () {
     app.get('/bookings', async (req, res) => {
       const guide = req.query.guide
       const query = { guide: guide }
-      const result = await bookingsCollection.find(query).toArray()
+      const result = await bookingsCollection.find(query).toArray();
       res.send(result)
     })
 
     app.get('/mybookings', async (req, res) => {
-      const email = req.query.email
-      const query = { email: email }
-      const result = await bookingsCollection.find(query).toArray()
-      res.send(result)
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await bookingsCollection.find(query).toArray();
+      res.send(result);
     })
 
     app.post('/bookings', async (req, res) => {
@@ -151,6 +151,12 @@ async function run () {
       const query = { _id: new ObjectId(id) }
       const result = await packagesCollection.findOne(query)
       res.send(result)
+    })
+
+    app.post('/packages', async(req, res) => {
+      const package = req.body;
+      const result = await packagesCollection.insertOne(package);
+      res.send(result);
     })
 
     // tour guides related api
