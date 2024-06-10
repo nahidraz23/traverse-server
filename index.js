@@ -76,10 +76,22 @@ async function run () {
     })
 
     // story related api
-    app.post('/stories', async (req, res) => {
-      const story = req.body;
-      const result = await storiesCollection.insertOne(story);
+    app.get('/stories', async (req, res) => {
+      const result = await storiesCollection.find().toArray()
       res.send(result);
+    })
+
+    app.get('/stories/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await storiesCollection.findOne(query);
+      res.send(result)
+    })
+
+    app.post('/stories', async (req, res) => {
+      const story = req.body
+      const result = await storiesCollection.insertOne(story)
+      res.send(result)
     })
 
     // bookings related api
