@@ -33,6 +33,7 @@ async function run () {
     const guidesCollection = client.db('traverseDB').collection('guides')
     const wishlistCollection = client.db('traverseDB').collection('wishlist')
     const bookingsCollection = client.db('traverseDB').collection('bookings')
+    const storiesCollection = client.db('traverseDB').collection('stories')
 
     // users related api
     app.get('/users', async (req, res) => {
@@ -72,6 +73,13 @@ async function run () {
       }
       const result = await usersCollection.updateOne(filter, updatedDoc)
       res.send(result)
+    })
+
+    // story related api
+    app.post('/stories', async (req, res) => {
+      const story = req.body;
+      const result = await storiesCollection.insertOne(story);
+      res.send(result);
     })
 
     // bookings related api
@@ -142,7 +150,7 @@ async function run () {
 
     // packages related api
     app.get('/packages/:type', async (req, res) => {
-      const type = req.params.type;
+      const type = req.params.type
       const query = { type: type }
       const result = await packagesCollection.find(query).toArray()
       res.send(result)
