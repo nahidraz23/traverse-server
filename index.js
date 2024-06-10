@@ -78,15 +78,15 @@ async function run () {
     app.get('/bookings', async (req, res) => {
       const guide = req.query.guide
       const query = { guide: guide }
-      const result = await bookingsCollection.find(query).toArray();
+      const result = await bookingsCollection.find(query).toArray()
       res.send(result)
     })
 
     app.get('/mybookings', async (req, res) => {
-      const email = req.query.email;
-      const query = { email: email };
-      const result = await bookingsCollection.find(query).toArray();
-      res.send(result);
+      const email = req.query.email
+      const query = { email: email }
+      const result = await bookingsCollection.find(query).toArray()
+      res.send(result)
     })
 
     app.post('/bookings', async (req, res) => {
@@ -103,10 +103,10 @@ async function run () {
           status: 'accepted'
         }
       }
-      const result = await bookingsCollection.updateOne(filter, updatedDoc);
-      res.send(result);
+      const result = await bookingsCollection.updateOne(filter, updatedDoc)
+      res.send(result)
     })
-    
+
     app.patch('/mybookings/:id', async (req, res) => {
       const id = req.params.id
       const filter = { _id: new ObjectId(id) }
@@ -115,8 +115,8 @@ async function run () {
           status: 'rejected'
         }
       }
-      const result = await bookingsCollection.updateOne(filter, updatedDoc);
-      res.send(result);
+      const result = await bookingsCollection.updateOne(filter, updatedDoc)
+      res.send(result)
     })
 
     // wishlist related api
@@ -141,6 +141,13 @@ async function run () {
     })
 
     // packages related api
+    app.get('/packages/:type', async (req, res) => {
+      const type = req.params.type;
+      const query = { type: type }
+      const result = await packagesCollection.find(query).toArray()
+      res.send(result)
+    })
+
     app.get('/packageDetails', async (req, res) => {
       const result = await packagesCollection.find().toArray()
       res.send(result)
@@ -153,10 +160,10 @@ async function run () {
       res.send(result)
     })
 
-    app.post('/packages', async(req, res) => {
-      const package = req.body;
-      const result = await packagesCollection.insertOne(package);
-      res.send(result);
+    app.post('/packages', async (req, res) => {
+      const package = req.body
+      const result = await packagesCollection.insertOne(package)
+      res.send(result)
     })
 
     // tour guides related api
